@@ -1,16 +1,46 @@
 import entities.Recipe;
 import interfaces.RecipeScorer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class RecetasSaludables implements RecipeScorer
 {
-    @Override
-    public String getName() {
-        return "RecetasSaludables";
+
+    List<String> prohibitedInIngredients;
+    public RecetasSaludables() {
+        this.prohibitedInIngredients = new ArrayList<>(List.of(
+                "Fritas", "Frita", "Grasa", "Mayonesa", "Alcohol", "Cerveza", "Salchichas", "Mortadela", "Chorizo", "Salsa de soja", "Salchicha", "Empanadas"));
     }
 
     @Override
-    public int score(Recipe recipe)
-    {
-        return recipe.getName().length() > 5? 1 : 0;
+    public String getName() {
+        return "Saludables";
+    }
+
+    @Override
+    public int score(Recipe recipe) {
+        Random rand = new Random();
+        //Genera un random entre el 1 y el 10
+        int numeroAleatorio = rand.nextInt(11 - 1 + 1) + 1;
+
+        for(String ingredient : recipe.getIngredients().keySet()){
+            if(this.containsWordInList(ingredient, prohibitedInIngredients)){
+                numeroAleatorio = 0;
+            }
+        }
+        return numeroAleatorio;
+    }
+
+    private static boolean containsWordInList(String word, List<String> words) {
+        word = word.toLowerCase();
+
+        for (String w : words) {
+            if (word.contains(w.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
