@@ -22,7 +22,6 @@ public class RecetasSaludables implements RecipeScorer
     @Override
     public int score(Recipe recipe) {
         Random rand = new Random();
-        //Genera un random entre el 1 y el 10
         int numeroAleatorio = rand.nextInt(11 - 1 + 1) + 1;
 
         for(String ingredient : recipe.getIngredients().keySet()){
